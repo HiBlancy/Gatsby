@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public static PlayerMovement obj;
+    public static PlayerMovement obj { get; private set; }
 
     bool isMoving = false;
     public bool isGrounded = false;
@@ -20,10 +20,12 @@ public class PlayerMovement : MonoBehaviour
     Animator animator;
     SpriteRenderer spriteRenderer;
 
-
     void Awake()
     {
-        obj = this;
+        if (obj != null && obj != this)
+            Destroy(this);
+        else
+            obj = this;
     }
 
     void Start()
@@ -70,10 +72,5 @@ public class PlayerMovement : MonoBehaviour
             theScale.x = Mathf.Abs(theScale.x);
 
         transform.localScale = theScale;
-    }
-
-    private void OnDestroy()
-    {
-        obj = null;
     }
 }
