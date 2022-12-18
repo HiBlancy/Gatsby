@@ -5,7 +5,7 @@ using static Cinemachine.DocumentationSortingAttribute;
 
 public class PlayerLives : MonoBehaviour
 {
-    public static PlayerLives obj;
+    public static PlayerLives obj { get; private set; }
     Animator animator;
     public int lives = 3;
 
@@ -18,8 +18,12 @@ public class PlayerLives : MonoBehaviour
 
     void Awake()
     {
-        obj = this;
+        if (obj != null && obj != this)
+            Destroy(this);
+        else
+            obj = this;
     }
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -74,9 +78,5 @@ public class PlayerLives : MonoBehaviour
             lives = Game.obj.maxLives;
 
         UIManager.obj.updateLives();
-    }
-    void OnDestroy()
-    {
-        obj = null;
     }
 }
